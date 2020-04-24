@@ -32,7 +32,7 @@ public: // Without description
   void EndOfEvent();
 
   void AddEnergy(G4double, G4double, G4double);
-  void AddParticle(G4double, G4double);
+  void AddParticle(G4double);
 
   void SetVerbose(G4int val) {fVerbose = val;};
   G4int GetVerbose() const {return fVerbose;};

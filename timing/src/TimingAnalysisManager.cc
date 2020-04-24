@@ -116,7 +116,7 @@ void TimingAnalysisManager::AddEnergy(G4double edep, G4double weight, G4double t
 }
 
 // energy spectrum for particles emitted in decay 
-void TimingAnalysisManager::AddParticle(G4double energy, G4double weight) 
+void TimingAnalysisManager::AddParticle(G4double energy) 
 {
   if (energy>0.0) fHisto->FillHisto(6,energy,1);
 }

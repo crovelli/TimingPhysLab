@@ -49,7 +49,7 @@ void TimingSteppingAction::UserSteppingAction(const G4Step* step)
 	// G4cout << "UserSteppingAction :: RadioactiveDecay => energy = " << energy/keV << ", time = " << time << ", partType = " << partType << G4endl; 
 
         // emitted particles except nuclei   
-	if ( partType!= "nucleus") analysis->AddParticle(energy/keV, weight);    
+	if ( partType!= "nucleus") analysis->AddParticle(energy/keV);    
       }
     }
   } // 1st step

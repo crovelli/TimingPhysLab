@@ -39,9 +39,9 @@ void TimingRunAction::EndOfRunAction(const G4Run* run)
   if (nofEvents == 0) return;
   
   // Total deposits
-  const TimingRun* b1Run = static_cast<const TimingRun*>(run);
-  G4double edep1 = b1Run->GetEdep1();
-  G4double edep2 = b1Run->GetEdep2();
+  const TimingRun* myRun = static_cast<const TimingRun*>(run);
+  G4double edep1 = myRun->GetEdep1();
+  G4double edep2 = myRun->GetEdep2();
 
   // Get the analysis manager
   TimingAnalysisManager* analysis = TimingAnalysisManager::GetInstance();

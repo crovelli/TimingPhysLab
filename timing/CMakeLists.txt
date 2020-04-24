@@ -2,7 +2,7 @@
 #----------------------------------------------------------------------------
 # Setup the project
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(B1)
+project(timing)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -38,7 +38,7 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(exampleB1 exampleB1.cc ${sources} ${headers})
+add_executable(timing timing.cc ${sources} ${headers})
 
 EXECUTE_PROCESS(COMMAND root-config --libs OUTPUT_VARIABLE ROOT_LD_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
 if(myROOTclass OR myROOTdict)
@@ -47,23 +47,19 @@ else(myROOTclass OR myROOTdict)
         set(CMAKE_EXE_LINKER_FLAGS ${ROOT_LD_FLAGS})
 endif(myROOTclass OR myROOTdict)
 
-target_link_libraries(exampleB1 ${Geant4_LIBRARIES})
+target_link_libraries(timing ${Geant4_LIBRARIES})
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
-# build B1. This is so that we can run the executable directly because it
+# build timing. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(EXAMPLEB1_SCRIPTS
-  exampleB1.in
-  exampleB1.out
-  init_vis.mac
-  run1.mac
-  run2.mac
-  vis.mac
+set(timing_SCRIPTS
+  run.in
+  visandrun.mac	
   )
 
-foreach(_script ${EXAMPLEB1_SCRIPTS})
+foreach(_script ${timing_SCRIPTS})
   configure_file(
     ${PROJECT_SOURCE_DIR}/${_script}
     ${PROJECT_BINARY_DIR}/${_script}
@@ -72,14 +68,8 @@ foreach(_script ${EXAMPLEB1_SCRIPTS})
 endforeach()
 
 #----------------------------------------------------------------------------
-# For internal Geant4 use - but has no effect if you build this
-# example standalone
-#
-add_custom_target(B1 DEPENDS exampleB1)
-
-#----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS exampleB1 DESTINATION bin)
+install(TARGETS timing DESTINATION bin)
 
 
