@@ -2,6 +2,7 @@
 
 # Create your area
 mkdir TimingLab
+
 cd TimingLab
 
 git clone git@github.com:crovelli/TimingPhysLab.git
@@ -9,7 +10,7 @@ git clone git@github.com:crovelli/TimingPhysLab.git
 cd TimingPhysLab
 
 # Setup environment 
-source geant4_lxplus.sh
+source geant4.sh
 
 mkdir timing_build
 
