@@ -3,6 +3,7 @@
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
 #include "G4Box.hh"
+#include "G4Tubs.hh"
 #include "G4Cons.hh"
 #include "G4Orb.hh"
 #include "G4Sphere.hh"
@@ -212,8 +213,8 @@ G4VPhysicalVolume* TimingDetectorConstruction::Construct()
   // ------------------------------------  
   // Source containter
   G4Material* plastic_mat = nist->FindOrBuildMaterial("plastic");
-  G4double source_dX = 5*mm, source_dY = 5*mm, source_dZ = 5.*mm;        
-  G4Box* source = new G4Box("source", source_dX/2, source_dY/2, source_dZ/2);
+  G4double source_radius = 10*mm,  source_dZ = 3.*mm;        
+  G4Tubs* source = new G4Tubs("source", 0, source_radius, source_dZ/2, 0, 2*M_PI);
   G4LogicalVolume* logicSource = new G4LogicalVolume(source, plastic_mat, "SourceLV");        
                
   G4RotationMatrix rotmD  = G4RotationMatrix();
