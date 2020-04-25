@@ -39,19 +39,20 @@ TimingAnalysisManager::~TimingAnalysisManager()
 
 void TimingAnalysisManager::BookHisto()         
 {
-  fHistEMax = 2500;
-  fHistEMin = 0;
-  fHistTMax = 3000000000000000000;
-  fHistTMin = 1000000000000000;
-  fHistNBin = 100;
-
-  fHisto->Add1D("H0", "Energy deposit (keV) in volume1", fHistNBin,fHistEMin,fHistEMax);
-  fHisto->Add1D("H1", "Energy deposit (keV) in volume2", fHistNBin,fHistEMin,fHistEMax);
-  fHisto->Add1D("H2", "1st Time deposit (nanosecond) in volume1", fHistNBin,fHistTMin,fHistTMax);
-  fHisto->Add1D("H3", "1st Time deposit (nanosecond) in volume2", fHistNBin,fHistTMin,fHistTMax);
-  fHisto->Add1D("H4", "Coincidence spectrum (keV) between volume1 and volume2",fHistNBin,fHistEMin,fHistEMax);
-  fHisto->Add1D("H5", "Coincidence deltaT between volume1 and volume2",fHistNBin,-0.1,0.1);
-  fHisto->Add1D("H6", "Decay emission spectrum (keV)",fHistNBin,fHistEMin,fHistEMax);
+  G4double fHistEMax = 2500;
+  G4double fHistEMin = 0;
+  G4double fHistTMax = 3E17;
+  G4double fHistTMin = 1E15;
+  G4int fHistNBinT = 100;
+  G4int fHistNBinE = 2500;
+  
+  fHisto->Add1D("H0", "Energy deposit (keV) in volume1", fHistNBinE,fHistEMin,fHistEMax);
+  fHisto->Add1D("H1", "Energy deposit (keV) in volume2", fHistNBinE,fHistEMin,fHistEMax);
+  fHisto->Add1D("H2", "1st Time deposit (nanosecond) in volume1", fHistNBinT,fHistTMin,fHistTMax);
+  fHisto->Add1D("H3", "1st Time deposit (nanosecond) in volume2", fHistNBinT,fHistTMin,fHistTMax);
+  fHisto->Add1D("H4", "Coincidence spectrum (keV) between volume1 and volume2",fHistNBinE,fHistEMin,fHistEMax);
+  fHisto->Add1D("H5", "Coincidence deltaT between volume1 and volume2",fHistNBinT,-0.1,0.1);
+  fHisto->Add1D("H6", "Decay emission spectrum (keV)",fHistNBinE,fHistEMin,fHistEMax);
 }
  
 void TimingAnalysisManager::BeginOfRun()  

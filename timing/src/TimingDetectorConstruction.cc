@@ -165,7 +165,7 @@ G4VPhysicalVolume* TimingDetectorConstruction::Construct()
 
   // ------------------------------------  
   // Distance source / pixel-bar
-  G4double ring  = 3*cm;           
+  G4double ring  = 2*cm;           
 
   // ------------------------------------  
   // Crystal

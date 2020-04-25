@@ -44,12 +44,6 @@ private:
 
   G4int fVerbose;
 
-  G4double fHistEMax;
-  G4double fHistEMin;
-  G4double fHistTMax;
-  G4double fHistTMin;
-  G4int fHistNBin;
-
   G4double fV1ThresE;
   G4double fV2ThresE;
 
