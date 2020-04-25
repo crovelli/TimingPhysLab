@@ -8,6 +8,8 @@
 #include "G4UIExecutive.hh"
 
 #include "Randomize.hh"
+#include "time.h"
+
 
 int main(int argc,char** argv)
 {
@@ -19,6 +21,10 @@ int main(int argc,char** argv)
 
   // Choose the Random engine
   G4Random::setTheEngine(new CLHEP::RanecuEngine);
+
+  //set random seed with system time
+  G4long seed = time(NULL);
+  CLHEP::HepRandom::setTheSeed(seed);
   
   // Construct the default run manager
   G4RunManager* runManager = new G4RunManager;

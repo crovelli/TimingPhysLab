@@ -28,12 +28,21 @@ void TimingDetectorConstruction::DefineMaterials()
   G4Element*  O = new G4Element("Oxygen",   "O",  z= 8., a= 16.00*g/mole);
   G4Element* Lu = new G4Element("Lutetium", "Lu", z=71., a=174.97*g/mole);
   G4Element* Si = new G4Element("Silicon",  "Si", z=14., a= 28.09*g/mole);
-  
+  G4Element* H  = new G4Element("Hydrogen" ,"H" , 1.,  1.01*g/mole);
+  G4Element* C  = new G4Element("Carbon"   ,"C" , 6., 12.00*g/mole);
+
+  G4Material* plastic = 
+    new G4Material("plastic", 1.0*g/cm3, 2);
+  plastic->AddElement(H, 1);
+  plastic->AddElement(C, 1);
+
+
   G4Material* LYSO = new G4Material("LYSO", density=7.1*g/cm3,3,kStateSolid);
   LYSO->AddElement(Lu, 2);
   LYSO->AddElement(Si, 1);
   LYSO->AddElement(O,  5);
 
+  
   const G4int nEntries_FAST = 261;
 
   G4double PhotonEnergy_FAST[nEntries_FAST] = 
@@ -160,7 +169,7 @@ G4VPhysicalVolume* TimingDetectorConstruction::Construct()
   // ------------------------------------  
   // Crystal
   G4Material* cryst_mat = nist->FindOrBuildMaterial("LYSO");
-  G4double cryst_dX = 3*cm, cryst_dY = 3*cm, cryst_dZ = 3*cm; 
+  G4double cryst_dX = 3*mm, cryst_dY = 3*mm, cryst_dZ = 3*mm; 
   
   G4Box* solidCryst = new G4Box("crystal", cryst_dX/2, cryst_dY/2, cryst_dZ/2);
   G4LogicalVolume* logicCryst = 
@@ -185,7 +194,7 @@ G4VPhysicalVolume* TimingDetectorConstruction::Construct()
 
   // ------------------------------------  
   // Bar
-  G4double bar_dX = 5.7*cm, bar_dY = 3.*cm, bar_dZ = 3.*cm;        // chiara
+  G4double bar_dX = 5.7*cm, bar_dY = 3.*mm, bar_dZ = 3.*mm;        // chiara
 
   G4Box* solidBar = new G4Box("bar", bar_dX/2, bar_dY/2, bar_dZ/2);
                      
@@ -199,6 +208,21 @@ G4VPhysicalVolume* TimingDetectorConstruction::Construct()
   G4Transform3D transformB = G4Transform3D(rotmB,positionB);
                                     
   new G4PVPlacement(transformB, logicBar, "bar", logicWorld, false, 1, checkOverlaps); 
+
+  // ------------------------------------  
+  // Source containter
+  G4Material* plastic_mat = nist->FindOrBuildMaterial("plastic");
+  G4double source_dX = 5*mm, source_dY = 5*mm, source_dZ = 5.*mm;        
+  G4Box* source = new G4Box("source", source_dX/2, source_dY/2, source_dZ/2);
+  G4LogicalVolume* logicSource = new G4LogicalVolume(source, plastic_mat, "SourceLV");        
+               
+  G4RotationMatrix rotmD  = G4RotationMatrix();
+  rotmD.rotateY(90*deg); 
+  rotmD.rotateZ(180*deg);
+  G4ThreeVector positionD(0,0,0);
+  G4Transform3D transformD = G4Transform3D(rotmD,positionD);
+                                    
+  new G4PVPlacement(transformD, logicSource, "source", logicWorld, false, 1, checkOverlaps); 
 
 
   // --------------------------------------------------

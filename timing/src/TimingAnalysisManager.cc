@@ -78,22 +78,20 @@ void TimingAnalysisManager::EndOfEvent()
 
     G4double firstTimeV1 = 0;
     G4double firstTimeV2 = 0;
+    G4double V1E = 0;
+    G4double V2E = 0;
+
     for (size_t i = 0; i < fEdepo.size(); i++) {
-      if ( ((firstTimeV1==0) || (fEdepo[i].GetTime()<firstTimeV1)) && fEdepo[i].GetEnergy() > 0. && fEdepo[i].GetEnergy() > fV1ThresE ) firstTimeV1 = fEdepo[i].GetTime();
-      if ( ((firstTimeV2==0) || (fEdepo[i].GetTime()<firstTimeV2)) && fEdepo[i].GetEnergy() < 0. && fabs(fEdepo[i].GetEnergy()) > fV2ThresE ) firstTimeV2 = fEdepo[i].GetTime();
+      if ( ((firstTimeV1==0) || (fEdepo[i].GetTime()<firstTimeV1)) && fEdepo[i].GetID() == 1 && fEdepo[i].GetEnergy() > fV1ThresE ) firstTimeV1 = fEdepo[i].GetTime();
+      if ( ((firstTimeV2==0) || (fEdepo[i].GetTime()<firstTimeV2)) && fEdepo[i].GetID() == 2 && fabs(fEdepo[i].GetEnergy()) > fV2ThresE ) firstTimeV2 = fEdepo[i].GetTime();
+      if ( fEdepo[i].GetID() == 1 ) {
+	V1E += fEdepo[i].GetEnergy();
+      } else if ( fEdepo[i].GetID() == 2 ) {
+	V2E += fEdepo[i].GetEnergy();
+      }
     }
     if (firstTimeV1>0) fHisto->FillHisto(2,firstTimeV1,1);      
     if (firstTimeV2>0) fHisto->FillHisto(3,firstTimeV2,1);      
-
-    G4double V1E = 0;
-    G4double V2E = 0;
-    for (size_t i = 0; i < fEdepo.size(); i++) {
-      if ( fEdepo[i].GetEnergy() > 0. ) {
-	V1E += fEdepo[i].GetEnergy();
-      } else {
-	V2E -= fEdepo[i].GetEnergy();
-      }
-    }
     if (V1E) fHisto->FillHisto(0,V1E,1);        // V1 energy histogram
     if (V2E) fHisto->FillHisto(1,V2E,1);        // V2 energy histogram
 
@@ -105,13 +103,13 @@ void TimingAnalysisManager::EndOfEvent()
     }
 
     // now add zero energy to separate events
-    AddEnergy(0.,0.,0.);
+    AddEnergy(0,0.,0.,0.);
   }
 }
 
-void TimingAnalysisManager::AddEnergy(G4double edep, G4double weight, G4double time) 
+void TimingAnalysisManager::AddEnergy(G4int vid, G4double edep, G4double weight, G4double time) 
 {
-  TimingEnergyDeposition A(edep,time,weight);
+  TimingEnergyDeposition A(vid,edep,time,weight);
   fEdepo.push_back(A);
 }
 

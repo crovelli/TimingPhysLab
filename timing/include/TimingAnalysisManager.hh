@@ -31,7 +31,7 @@ public: // Without description
   void BeginOfEvent();
   void EndOfEvent();
 
-  void AddEnergy(G4double, G4double, G4double);
+  void AddEnergy(G4int, G4double, G4double, G4double);
   void AddParticle(G4double);
 
   void SetVerbose(G4int val) {fVerbose = val;};
