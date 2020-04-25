@@ -26,15 +26,15 @@ void TimingSteppingAction::UserSteppingAction(const G4Step* step)
   if(StepNo >= 10000) fTrack->SetTrackStatus(fStopAndKill);
   
   // this step
-  G4double time   = step->GetPreStepPoint()->GetGlobalTime();
+  G4double time   = step->GetPreStepPoint()->GetGlobalTime()/ns;
   G4double weight = step->GetPreStepPoint()->GetWeight();
 
   TimingAnalysisManager* analysis = TimingAnalysisManager::GetInstance();
 
   if (StepNo == 1) { //beginning of step                                                                      
-    G4double energy = step->GetPreStepPoint()->GetKineticEnergy();
+    G4double energy = step->GetPreStepPoint()->GetKineticEnergy()/keV;
     G4String partType= fTrack->GetDefinition()->GetParticleType();
-    
+
     // G4cout << "UserSteppingAction :: StepNo = " << StepNo << ", partType == " << partType << G4endl;
     // if (fTrack->GetTrackID() != 1 ) G4cout << "UserSteppingAction :: process = " << fTrack->GetCreatorProcess()->GetProcessName() << G4endl;
     
@@ -46,10 +46,10 @@ void TimingSteppingAction::UserSteppingAction(const G4Step* step)
       if (fTrack->GetCreatorProcess()->GetProcessName() == "RadioactiveDecay") {   //Radioactive decay products    
 
         // all products   
-	// G4cout << "UserSteppingAction :: RadioactiveDecay => energy = " << energy/keV << ", time = " << time << ", partType = " << partType << G4endl; 
+	//G4cout << "UserSteppingAction :: RadioactiveDecay => energy = " << energy/keV << ", time = " << time << ", partType = " << partType << G4endl; 
 
         // emitted particles except nuclei   
-	if ( partType!= "nucleus") analysis->AddParticle(energy/keV);    
+	if ( partType!= "nucleus") analysis->AddParticle(energy);    
       }
     }
   } // 1st step
@@ -75,12 +75,12 @@ void TimingSteppingAction::UserSteppingAction(const G4Step* step)
   // check if we are in scoring volumes
   if (volume != fScoringVolume1 && volume != fScoringVolume2) return;
 
-  G4double edepStep = step->GetTotalEnergyDeposit();
+  G4double edepStep = step->GetTotalEnergyDeposit()/keV;
   if (fTrack->GetTrackID() != 1 && edepStep) {
-    if (volume == fScoringVolume1) analysis->AddEnergy(edepStep/keV,weight,time/nanosecond);  
-    if (volume == fScoringVolume2) analysis->AddEnergy(-edepStep/keV,weight,time/nanosecond);      // reverse sign to separate at analysis level
-    if (volume == fScoringVolume1) fEventAction->AddEdep1(edepStep/keV);  
-    if (volume == fScoringVolume2) fEventAction->AddEdep2(edepStep/keV);  
+    if (volume == fScoringVolume1) analysis->AddEnergy(1,edepStep,weight,time);  
+    if (volume == fScoringVolume2) analysis->AddEnergy(2,edepStep,weight,time);     
+    if (volume == fScoringVolume1) fEventAction->AddEdep1(edepStep);  
+    if (volume == fScoringVolume2) fEventAction->AddEdep2(edepStep);  
   }
 }
 

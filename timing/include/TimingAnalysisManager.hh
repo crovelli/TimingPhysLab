@@ -31,7 +31,7 @@ public: // Without description
   void BeginOfEvent();
   void EndOfEvent();
 
-  void AddEnergy(G4double, G4double, G4double);
+  void AddEnergy(G4int, G4double, G4double, G4double);
   void AddParticle(G4double);
 
   void SetVerbose(G4int val) {fVerbose = val;};
@@ -43,12 +43,6 @@ private:
   static TimingAnalysisManager* fManager;
 
   G4int fVerbose;
-
-  G4double fHistEMax;
-  G4double fHistEMin;
-  G4double fHistTMax;
-  G4double fHistTMin;
-  G4int fHistNBin;
 
   G4double fV1ThresE;
   G4double fV2ThresE;
